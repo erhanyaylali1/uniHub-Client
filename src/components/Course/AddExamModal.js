@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import { Button, Input, Form, Collapse, DatePicker, message, Col, Row } from 'antd';
 import AddQuestionCard from './AddQuestionCard';
-import axios from '../utils/apiCall'
-import { makeStyles } from '@material-ui/core/styles';
+import axios from '../../utils/apiCall';
+import { useSelector } from 'react-redux';
+import { getScreenSize } from '../../features/generalSlice';
 
 const Panel = Collapse.Panel;
 
-const AddQuestionForm = () => {
+const AddExamModal = ({ courseId, closeModal }) => {
 
-    const classes = useStyles();
     const [form] = Form.useForm();
+    const size = useSelector(getScreenSize);
     const [questions, setQuestions] = useState([]);
     
 
     const handleSubmitExam = (values) => {  
-        console.log(values);
         values.date[0] = values.date[0].format("DD.MM.YYYY HH:mm");
         values.date[1] = values.date[1].format("DD.MM.YYYY HH:mm");
         handleUpload(values)
@@ -30,16 +30,16 @@ const AddQuestionForm = () => {
         formData.append('questions', JSON.stringify(questions));
         formData.append('exam', JSON.stringify(exam));
 
-        axios('courses1/1/addExam',{
+        axios(`courses1/${courseId}/addExam`,{
             method: 'post',
             processData: false,
             data: formData
         }).then((res) => {
             message.success(res.data);
-            form.resetFields();
-            setQuestions([]);
         }).catch((err) => {
             message.error(err.message)
+        }).finally(() => {
+            closeModal();
         })
     }
 
@@ -100,7 +100,7 @@ const AddQuestionForm = () => {
     }
 
     return (
-        <div>
+        <div className="add-exam-modal-container" style={{ padding: size > 500 ? '40px':'20px'}}>
             <Form
                 form={form}
                 labelCol={{ span: 4 }}
@@ -113,9 +113,12 @@ const AddQuestionForm = () => {
                 <Form.Item label="Exam Date" name="date">
                     <DatePicker.RangePicker format="DD/MM/YYYY HH:mm" showTime={{ format: 'HH:mm' }} />
                 </Form.Item>
+                <Form.Item label="Exam Weight Percentage" name="weight" required>
+                    <Input />
+                </Form.Item>
                 {questions.length ? (
-                    <Col xs={24} md={18} className={classes.questions}>
-                        <Collapse className={classes.collapse}>
+                    <Col xs={24} md={18} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                        <Collapse style={{ margin: '0 auto 20px auto' }}>
                             {questions.map((el, index) => (
                                 <Panel header={`Question ${index + 1}`} key={index}>
                                     <AddQuestionCard 
@@ -136,7 +139,7 @@ const AddQuestionForm = () => {
                 <Form.Item>
                     <Row>
                         <Col xs={0} md={7}/>
-                        <Col xs={12} md={5} className={classes.button}>
+                        <Col xs={12} md={5} style={{ display: 'flex', justifyContent: 'center' }}>
                             <Button
                                 type="secondary"
                                 onClick={addQuestion}
@@ -144,7 +147,7 @@ const AddQuestionForm = () => {
                                 Add Question
                             </Button>
                         </Col>
-                        <Col xs={12} md={5} className={classes.button}>
+                        <Col xs={12} md={5} style={{ display: 'flex', justifyContent: 'center' }}>
                             <Button
                                 type="primary"
                                 htmlType="submit"
@@ -159,18 +162,4 @@ const AddQuestionForm = () => {
     )
 }
 
-export default AddQuestionForm
-
-const useStyles = makeStyles({
-	collapse: {
-        margin: '0 auto 20px auto'
-    },
-    button : {
-        display: 'flex',
-        justifyContent: 'center'
-    },
-    questions: {
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    }
-});
+export default AddExamModal

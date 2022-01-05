@@ -15,7 +15,6 @@ export const userSlice = createSlice({
             state.user = null;
             state.isLogged = false;
         }
-
     },
 });
 

@@ -5,66 +5,74 @@ import Grid from '@mui/material/Grid';
 import { Tabs } from 'antd';
 import { useSelector } from 'react-redux';
 import { getRefresh, getScreenSize } from '../features/generalSlice';
-import { getUser } from '../features/userSlice';
-import CourseDetailTab from '../components/Course/CourseDetailTab';
-import ExamsTab from '../components/Course/ExamsTab';
-import HomeworksTab from '../components/Course/HomeworksTab';
-import StudentsTab from '../components/Course/StudentsTab';
-
+import TeachersTab from '../components/University/TeachersTab';
+import InfoTab from '../components/University/InfoTab';
+import CourseTab from '../components/University/CourseTab';
+import { getIsUserLogged, getUser } from '../features/userSlice';
 const { TabPane } = Tabs;
 
 
-const CoursePage = () => {
+const UniversityPage = () => {
 
+    const isLogged = useSelector(getIsUserLogged);
     const user = useSelector(getUser);
-    const { courseId } = useParams();
-    const [course, setCourse] = useState(null);
+    const { universityId } = useParams();
+    const [universities, setUniversity] = useState(null);
     const [activeKey, setActiveKey] = useState("1");
-    const [teacherInfo, setTeacherInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const size = useSelector(getScreenSize);
     const refresh = useSelector(getRefresh);
-    const teacherId = user?.teacherNumber ? user.id : null;
-    const isOwner = course?.TeacherId ? (course.TeacherId === teacherId) : false;
+    const [courses, setCourses] = useState([]);
+
+    const teacherId = isLogged ? (user.isStudent ? null : user.id) : null;
+    let isRector;
+
+    universities?.teachers.forEach((teacher) => {
+        if (teacher.id === teacherId) {
+            isRector = teacher.isRector;
+        }
+    })
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`/courses/${courseId}`)
+        axios.get(`/universities/${universityId}`)
             .then((res) => {
-                setCourse(res.data)
-                axios.get(`/teachers/${res.data.TeacherId}`)
-                    .then(res => setTeacherInfo(res.data));
+                setUniversity(res.data)
+                let temp = []
+                res.data.teachers.forEach(element => {
+                    element.courses.forEach(el => {
+                        temp.push(el)
+                    })
+                });
+                setCourses(temp)
             })
             .finally(() => setLoading(false))
-    }, [courseId, refresh]);
+    }, [universityId, refresh]);
 
     const RenderTabScreens = () => {
         switch (activeKey) {
             case "1":
-                return <CourseDetailTab info={course} teacherInfo={teacherInfo} isOwner={isOwner} />
+                return <InfoTab university={universities} />
             case "2":
-                return <StudentsTab students={course?.Students} />
+                return <TeachersTab teachers={universities?.teachers} isRector={isRector} universityId={universityId} />
             case "3":
-                return <HomeworksTab homeworks={course?.homeworks} courseId={courseId} isOwner={isOwner} />
-            case "4":
-                return <ExamsTab exams={course?.exams} courseId={courseId} isOwner={isOwner} />
+                return <CourseTab courses={courses} />
             default:
-                return <CourseDetailTab info={course} teacherInfo={teacherInfo} isOwner={isOwner} />
+                return <TeachersTab teachers={universities?.teachers} />
         }
     }
 
     return (
         <Grid container justifyContent='center'>
             {loading ? "Loading..." : (
-                course ? (
+                universities ? (
                     <Grid item container spacing={2}>
                         <Grid item container xs={0} sm={0} md={0} lg={2} />
                         <Grid item container xs={12} sm={12} md={3} lg={1.5}>
                             <Tabs activeKey={activeKey} onTabClick={setActiveKey} tabPosition={size > 850 ? 'left' : 'top'} style={{ width: '100%' }} centered>
                                 <TabPane tab="Info" key="1" />
-                                <TabPane tab="Students" key="2" />
-                                <TabPane tab="Homeworks" key="3" />
-                                <TabPane tab="Exams" key="4" />
+                                <TabPane tab="Teachers" key="2" />
+                                <TabPane tab="Courses" key="3" />
                             </Tabs>
                         </Grid>
                         <Grid item xs={12} sm={12} md={9} lg={5}>
@@ -81,6 +89,6 @@ const CoursePage = () => {
         </Grid>
     )
 }
-
-export default CoursePage
+//<TeachersTab teachers={universities?.teachers} />
+export default UniversityPage
 

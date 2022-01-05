@@ -1,15 +1,13 @@
-import { makeStyles } from '@material-ui/core/node_modules/@material-ui/styles'
 import { Col, Row, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import EachChoiceCard from './EachChoiceCard';
 import { Button, Icon } from 'semantic-ui-react'
-import { getScreenSize } from '../features/generalSlice';
+import { getScreenSize } from '../../features/generalSlice';
 import { useSelector } from 'react-redux';
 
 const QuestionCard = ({ question, index, setIndex, selectedGlobal, setSelectedGlobal, length, saveResults }) => {
 
     const screenSize = useSelector(getScreenSize);
-    const classes = useStyle();
     const [selected, setSelected] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -42,8 +40,6 @@ const QuestionCard = ({ question, index, setIndex, selectedGlobal, setSelectedGl
         setIsModalVisible(false)
     }
 
-
-
     const paddingLeftAndRight = {
         paddingLeft: screenSize > 760 ? '20px': '0px',
         paddingRight: screenSize > 760 ? '20px': '0px'
@@ -52,18 +48,18 @@ const QuestionCard = ({ question, index, setIndex, selectedGlobal, setSelectedGl
 
     return (
         <Col style={{ marginTop: screenSize < 500 ? '25px':'50px' }}>
-            <Row className={`${classes.questionNumber} ${screenSize > 760 && classes.marginLeft20}`}>
+            <Row style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, marginLeft: screenSize > 760 ? 20:0 }} >
                 Question {index + 1}
             </Row>
-            <Row style={{ justifyContent: 'center' }}>
-                <Col className={classes.answerContainer} style={{ marginRight: screenSize < 500 ? '0':'20px'}}>
-                    <Row className={`${classes.question} ${screenSize > 760 && classes.marginLeft20}`}>
+            <Row style={{ justifyContent: 'center', flexDirection: question.imagePath ? 'column-reverse':'row' }}>
+                <Col style={{ flex: 1, marginRight: screenSize < 500 ? '0':'20px'}}>
+                    <Row style={{ fontSize: 20, fontWeight: 500, marginBottom: 10, justifyContent: 'space-between', marginLeft: screenSize > 760 ? 20:0 }}>
                         <Col>
                             {question.question}
                         </Col>
                     </Row>
-                    <Row className={classes.choices}>
-                        <Row gutter={[0, 20]} className={classes.choicesContainer}>
+                    <Row style={{ marginTop: 50 }}>
+                        <Row gutter={[0, 20]} style={{ justifyContent: 'space-around', width: '100%'}}>
                             <EachChoiceCard 
                                 choice={question.choice1}
                                 index={1}
@@ -95,18 +91,17 @@ const QuestionCard = ({ question, index, setIndex, selectedGlobal, setSelectedGl
                         </Row>
                     </Row>      
                 </Col>
-                <Col className={classes.imageContainer}>
+                <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
                     {question.imagePath ? (
                         <img 
-                            className={classes.image}
-                            style={{ width: screenSize < 500 ? '250px':'300px' }}
+                            style={{ height: 'auto', width: screenSize < 500 ? '250px':'300px', paddingBottom: 20 }}
                             alt="question"
                             src={`http://localhost:8080/uploads/exams/${question.imagePath}`}
                         />
                     ):(null)}
                 </Col>
             </Row>
-            <Row className={classes.buttonContainer} style={paddingLeftAndRight} >
+            <Row style={{ ...paddingLeftAndRight, marginTop: 20, paddingTop: 20, paddingBottom: 20, display: 'flex', justifyContent: 'space-around' }} >
                 <Button 
                     icon labelPosition='left' 
                     onClick={handleBack} disabled={index === 0} 
@@ -144,45 +139,3 @@ const QuestionCard = ({ question, index, setIndex, selectedGlobal, setSelectedGl
 }
 
 export default QuestionCard
-
-const useStyle = makeStyles({
-    questionNumber: {
-        fontSize: 20,
-        fontWeight: 700,
-        marginBottom: 20,
-    },
-    question: {
-        fontSize: 20,
-        fontWeight: 500,
-        marginBottom: 10,
-        justifyContent: 'space-between'
-    },
-    marginLeft20: {
-        marginLeft: 20
-    },
-    choices: {
-        marginTop: 50
-    },
-    choicesContainer: {
-        justifyContent: 'space-around',
-        width: '100%'
-    },
-    buttonContainer: {
-        marginTop: 20,  
-        paddingTop: 20,
-        paddingBottom: 20,
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    answerContainer:{
-        flex: 1
-    },
-    image: {
-        height: 'auto',
-    },
-    imageContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: 20
-    }
-})

@@ -28,14 +28,6 @@
   color: #61dafb;
 }
 
-.ui.pagination.menu .item {
-    font-size: 12px !important;
-}
-
-.ant-divider {
-    border-top: 1px solid rgba(0, 0, 0, 0.16) !important;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -43,4 +35,76 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.ant-statistic-content-value{
+    font-size: 19px !important;
+}
+
+.course-tab-list-header {
+    color: #333 !important;
+    cursor: pointer !important;
+    font-size: 15px !important;
+}
+
+.ant-spin-nested-loading > div > .ant-spin .ant-spin-dot {
+    position: fixed !important;
+}
+
+.add-homework-modal-container, .add-exam-modal-container {
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    box-shadow: 24px;
+    border-radius: 10px;
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+
+.ant-picker-dropdown{
+    z-index: 1356 !important;
+}
+
+.add-question-card-each-container .ant-row{
+    margin-bottom: 10px;
+}
+
+.ant-picker-time-panel-column {
+    width: 45px !important;
+}
+
+.ant-picker-time-panel-cell-inner {
+    text-align: center !important;
+    padding: 0px !important ;
+}
+
+.student-uploads-tab-container .course-tab-list-header {
+    font-size: 13px !important;
+    line-height: 1em;
+    text-align: center;
+}
+
+.student-uploads-tab-container .ui.card>.content>.header:not(.ui) {
+    height: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.student-uploads-tab-container .ui.card>.content {
+    padding: 0.5em;
+}
+
+.grade-homework-input-container input {
+    width: 50%;
+}
+.buy-course-modal .ant-col.ant-form-item-control, .buy-course-modal .ant-input-number {
+    width: 100% !important;
+}
+
+.css-au3a9q-MuiFormLabel-root-MuiInputLabel-root {
+    font-size: 15px !important;
 }

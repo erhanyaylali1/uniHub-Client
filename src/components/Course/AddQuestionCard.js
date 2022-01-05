@@ -1,14 +1,11 @@
 import React from 'react'
 import { Upload, Button, Input, Row } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { makeStyles } from '@material-ui/core/styles';  
 
 const AddQuestionCard = ({ index, question, onHandleUpload, handleChoicesChange, handleQuestionChange, handleAnswerChange }) => {
 
-    const classes = useStyles()
-
     return (
-        <div className={classes.row}>
+        <div className="add-question-card-each-container">
             <Row>
                 <Input.TextArea
                     rows={4}
@@ -17,7 +14,7 @@ const AddQuestionCard = ({ index, question, onHandleUpload, handleChoicesChange,
                     onChange={(e) => handleQuestionChange(e.target.value, index)}
                 />
             </Row>
-            <Row  className={classes.row}>  
+            <Row>  
                 <Upload
                     listType="picture"
                     onChange={(value) => onHandleUpload(value, index)} 
@@ -66,11 +63,3 @@ const AddQuestionCard = ({ index, question, onHandleUpload, handleChoicesChange,
 }
 
 export default AddQuestionCard
-
-const useStyles = makeStyles({
-	row: {
-        "& div.ant-row": {
-            marginBottom: 20,
-        } 
-    },
-});
