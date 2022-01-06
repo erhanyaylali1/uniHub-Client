@@ -33,23 +33,29 @@ const LoginPage = () => {
             await axios.post(`/teachers/login`, { email: email, password: password })
                 .then((res) => {
                     if (res.data.error) {
-                        axios.post(`/students/login`, { email: email, password: password })
-                            .then((res) => {
-                                if (res.data.length === 0) {
-                                    setFormValid(false);
-                                    setErrorMessage("Böyle bir kullanıcı bulunamadı.");
-                                    return;
-                                }
-                                else {
-                                    dispatch(login(res.data));
-                                    localStorage.setItem("token", res.data.token);
-                                    message.success('Başarıyla giriş yapıldı');
-                                    history.push('/home');
-                                }
-                            }).catch((err) => {
-                                message.error(err.message);
-                                console.log("Bir sorun oluştu, daha sonra tekrar deneyiniz. Hata: ", err);
-                            })
+                        if (res.data.error === 'User is not Assgined Yet') {
+                            setFormValid(false);
+                            setErrorMessage("Kullanıcı rektor tarafından onaylanmadı.");
+                            return;
+                        } else {
+
+                            axios.post(`/students/login`, { email: email, password: password })
+                                .then((res) => {
+                                    if (res.data.length === 0) {
+                                        setFormValid(false);
+                                        setErrorMessage("Böyle bir kullanıcı bulunamadı.");
+                                        return;
+                                    }
+                                    else {
+                                        dispatch(login(res.data));
+                                        localStorage.setItem("token", res.data.token);
+                                        message.success('Başarıyla giriş yapıldı');
+                                        history.push('/home');
+                                    }
+                                }).catch((err) => {
+                                    message.error("Giriş Yapılamadı.");
+                                })
+                        }
                     }
                     else {
                         dispatch(login(res.data));
@@ -58,7 +64,7 @@ const LoginPage = () => {
                         history.push('/home');
                     }
                 }).catch((err) => {
-                    message.error(err.message);
+                    message.error(err.data.error);
                     console.log("Bir sorun oluştu, daha sonra tekrar deneyiniz. Hata: ", err);
                 })
         }
