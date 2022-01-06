@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 import { Card } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, message } from 'antd';
-import { getScreenSize } from '../../features/generalSlice';
+import { getRefresh, getScreenSize, setRefresh } from '../../features/generalSlice';
 import BuyCourseModal from '../../components/University/BuyCourseModal';
 import axios from '../../utils/apiCall';
+import { getUser } from '../../features/userSlice';
 
 const CourseTab = ({ courses }) => {
 
+    const dispatch = useDispatch();
+    const refresh = useSelector(getRefresh);
     const size = useSelector(getScreenSize);
     const [visible, setIsVisible] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
 
-    const isStudent = false;
-    const studentId = 3;
+    const user = useSelector(getUser);
+    const isStudent = user ? user.isStudent : false;
+    const studentId = isStudent ? user.id : null;
 
     const [name, setName] = useState('');
     const [creditCard, setCreditCard] = useState('');
@@ -26,6 +30,7 @@ const CourseTab = ({ courses }) => {
         axios.post(`/courses/${selectedCourse.id}/${studentId}`)
             .then((res) => message.success(res.data))
             .then(() => setIsVisible(false))
+            .then(() => dispatch(setRefresh(!refresh)))
             .catch((err) => message.error(err.message))
     }
 

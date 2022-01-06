@@ -26,58 +26,58 @@ const RegisterPage = () => {
 
 
     const userRegister = () => {
-        
-        if(email.length === 0 || password.length === 0 || confirmedPassword.length === 0 || fullName.length === 0 || !type){
+
+        if (email.length === 0 || password.length === 0 || confirmedPassword.length === 0 || fullName.length === 0 || !type) {
             setFormValid(false);
             setErrorMessage("Tüm alanları eksiksiz doldurunuz.");
             return;
         }
-        else if(password.length < 8 || confirmedPassword.length < 8){
+        else if (password.length < 8 || confirmedPassword.length < 8) {
             setFormValid(false);
             setErrorMessage("Şifre 8 karakter ve üzeri olmalıdır.")
             return;
         }
-        else if(password != confirmedPassword){
+        else if (password != confirmedPassword) {
             setFormValid(false);
             setErrorMessage("Şifreleriniz eşleşmiyor.")
             return;
         }
-        else{
-            if(type === 1){
-                axios.post(`/students`, {fullName: fullName, email: email, password: password})
-                .then((res) => {
-                    if(res.status === 201){
-                        setFormValid(true);
-                        setErrorMessage("");
-                        setAlertShow(true);
-                        setTimeout(() => {
-                            history.push('/login');
-                        }, 3000)
-                    }
-                    else{
-                        setFormValid(false);
-                        setErrorMessage("Bir sorun oluştu, alanları kontrol ediniz.")
-                        return;
-                    }
-                })
+        else {
+            if (type === 1) {
+                axios.post(`/students`, { fullName: fullName, email: email, password: password })
+                    .then((res) => {
+                        if (res.status === 201) {
+                            setFormValid(true);
+                            setErrorMessage("");
+                            setAlertShow(true);
+                            setTimeout(() => {
+                                history.push('/login');
+                            }, 3000)
+                        }
+                        else {
+                            setFormValid(false);
+                            setErrorMessage("Bir sorun oluştu, alanları kontrol ediniz.")
+                            return;
+                        }
+                    })
             }
-            else{
-                axios.post(`/teachers`, {fullName: fullName, email: email, password: password})
-                .then((res) => {
-                    if(res.status === 201){
-                        setFormValid(true);
-                        setErrorMessage("");
-                        setAlertShow(true);
-                        setTimeout(() => {
-                            history.push('/login');
-                        }, 3000)
-                    }
-                    else{
-                        setFormValid(false);
-                        setErrorMessage("Bir sorun oluştu, alanları kontrol ediniz.")
-                        return;
-                    }
-                })
+            else {
+                axios.post(`/teachers`, { fullName: fullName, email: email, password: password })
+                    .then((res) => {
+                        if (res.status === 201) {
+                            setFormValid(true);
+                            setErrorMessage("");
+                            setAlertShow(true);
+                            setTimeout(() => {
+                                history.push('/login');
+                            }, 3000)
+                        }
+                        else {
+                            setFormValid(false);
+                            setErrorMessage("Bir sorun oluştu, alanları kontrol ediniz.")
+                            return;
+                        }
+                    })
             }
         }
     }
@@ -85,20 +85,20 @@ const RegisterPage = () => {
 
     return (
         <div className="container-loginReg">
-            
+
             <div className="row-register">
-            <div style={{visibility: alertShow ? 'visible' : 'hidden'}}>
-                <Alert
-                    message="Başarılı"
-                    description="Başarıyla kayıt oldunuz. Giriş sayfasına yönlendiriyorsunuz.."
-                    type="success"
-                    showIcon
+                <div style={{ visibility: alertShow ? 'visible' : 'hidden' }}>
+                    <Alert
+                        message="Başarılı"
+                        description="Başarıyla kayıt oldunuz. Giriş sayfasına yönlendiriyorsunuz.."
+                        type="success"
+                        showIcon
                     />
                 </div>
                 <div className="header">
                     <h1 className="headerText">Register</h1>
-                </div>       
-                
+                </div>
+
                 <div className="radioGroupText">
                     <span className='radioFieldText'><b>Select a type</b></span>
                 </div>
@@ -111,20 +111,20 @@ const RegisterPage = () => {
                     </Radio.Group>
                 </div>
                 <div className="inputFieldDiv">
-                    <TextField id="filled-basic" label="Fullname" variant="filled" className="inputField" onChange={e => setFullName(e.target.value)}/>
+                    <TextField id="filled-basic" label="Fullname" variant="standard" className="inputField" onChange={e => setFullName(e.target.value)} />
                 </div>
                 <div className="inputFieldDiv">
-                    <TextField id="filled-basic" type="email" label="E-mail" variant="filled" className="inputField" onChange={e => setEmail(e.target.value)}/>
+                    <TextField id="filled-basic" type="email" label="E-mail" variant="standard" className="inputField" onChange={e => setEmail(e.target.value)} />
                 </div>
                 <div className="inputFieldDiv">
-                    <TextField id="filled-basic" label="Password" type="password" variant="filled" className="inputField" onChange={e => setPassword(e.target.value)}/>
+                    <TextField id="filled-basic" label="Password" type="password" variant="standard" className="inputField" onChange={e => setPassword(e.target.value)} />
                 </div>
                 <div className="inputFieldDiv">
-                    <TextField id="filled-basic" label="Confirm Password" type="password" variant="filled" className="inputField" onChange={e => setConfirmedPassword(e.target.value)}/>
+                    <TextField id="filled-basic" label="Confirm Password" type="password" variant="standard" className="inputField" onChange={e => setConfirmedPassword(e.target.value)} />
                 </div>
-                
+
                 <div className="textFieldDiv">
-                    <span className="registerText">Already have an account? <b><a href='/login' style={{color: 'red'}}>Login</a></b></span>
+                    <span className="registerText">Already have an account? <b><a href='/login' style={{ color: 'red' }}>Login</a></b></span>
                 </div>
                 <div className="errorTextField">
                     <span className="errorText">{errorMessage}</span>
@@ -132,7 +132,7 @@ const RegisterPage = () => {
                 <div className="buttonFieldDiv">
                     <Button className="submitButton" type="submit" variant="contained" color='success' classes="submitButton" onClick={userRegister}>REGISTER</Button>
                 </div>
-                
+
             </div>
         </div>
     )

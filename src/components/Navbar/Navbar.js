@@ -1,21 +1,21 @@
 import React from 'react'
-import { Menu } from 'antd';
-import { Link, useHistory } from "react-router-dom";
+import { Menu, message } from 'antd';
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { getIsUserLogged, logout } from '../../features/userSlice';
 import { useLocation } from "react-router-dom";
-
-const { SubMenu } = Menu;
 
 const Navbar = () => {
 
     const isLogged = useSelector(getIsUserLogged);
     const dispatch = useDispatch();
-    const url = useLocation();
     const History = useHistory()
+
     const handleLogout = () => {
         dispatch(logout());
         localStorage.removeItem("token");
+        History.push('/login');
+        message.success("Başarıyla çıkış yapıldı");
     }
 
     return (
@@ -30,7 +30,7 @@ const Navbar = () => {
                 Profile
             </Menu.Item>
             {isLogged ? (
-                <Menu.Item key="Logout" onClick={() => History.push('/logout')} style={{ marginLeft: 'auto' }}>
+                <Menu.Item key="Logout" onClick={handleLogout} style={{ marginLeft: 'auto' }}>
                     Logout
                 </Menu.Item>
             ) : (

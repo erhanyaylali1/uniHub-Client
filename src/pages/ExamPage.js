@@ -19,13 +19,13 @@ const ExamPage = () => {
     const { examId } = useParams();
 
     let isStudent = isLogged ? (user.isStudent ? true : false) : false;
-    const studentId = isStudent ? 2 : null;
-    const teacherId = isStudent ? null : 1;
+    const studentId = isStudent ? user?.id : null;
+    const teacherId = isStudent ? null : user?.id;
     let result = null;
     let isStudentSubmit = false;
     let isOwner = !isStudent && questions ? questions?.Course?.TeacherId === teacherId : false;
 
-    console.log(isStudent)
+    console.log(isOwner)
 
     questions?.Students?.forEach((student) => {
         if (studentId === student.id) {
@@ -76,7 +76,7 @@ const ExamPage = () => {
                 <div style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
                     <TeacherEdit exam={questions} />
                 </div>
-            ) :
+            ) : (
                 isStudent ? (
                     isStudentSubmit ? (
                         <Result result={result} type="submitted" />
@@ -87,12 +87,9 @@ const ExamPage = () => {
                             studentId={studentId}
                         />
                     )
-                ) : (
-                    <div>
-                        You are not authroized to view this page!
-                    </div>
-                )
-            }
+                ) : null
+            )}
+
         </div>
     )
 }

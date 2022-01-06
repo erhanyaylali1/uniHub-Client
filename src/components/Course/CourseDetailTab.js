@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 const Option = Select.Option;
 
-const CourseDetailTab = ({ info, teacherInfo, isOwner }) => {
+const CourseDetailTab = ({ info, teacherInfo, isOwner, isEnrolledStudent }) => {
 
     const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false);
@@ -122,21 +122,25 @@ const CourseDetailTab = ({ info, teacherInfo, isOwner }) => {
                     <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
                         <Statistic title="Teacher Mail" value={teacherInfo?.email} />
                     </Grid>
-                    <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
-                        <Statistic title="Zoom Link" formatter={() => <a href={info?.zoomLink}>Click Here</a>} />
-                    </Grid>
-                    <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
-                        <Statistic title="Course Day" value={days[info?.day - 1]} />
-                    </Grid>
-                    <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
-                        <Statistic title="Start Time" value={info?.startTime} />
-                    </Grid>
-                    <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
-                        <Statistic title="Duration" value={`${info?.duration} minute`} />
-                    </Grid>
-                    <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
-                        <Statistic title="Number of Students" value={info?.studentCount} />
-                    </Grid>
+                    {isEnrolledStudent && (
+                        <>
+                            <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
+                                <Statistic title="Zoom Link" formatter={() => <a href={info?.zoomLink}>Click Here</a>} />
+                            </Grid>
+                            <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
+                                <Statistic title="Course Day" value={days[info?.day - 1]} />
+                            </Grid>
+                            <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
+                                <Statistic title="Start Time" value={info?.startTime} />
+                            </Grid>
+                            <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
+                                <Statistic title="Duration" value={`${info?.duration} minute`} />
+                            </Grid>
+                            <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
+                                <Statistic title="Number of Students" value={info?.studentCount} />
+                            </Grid>
+                        </>
+                    )}
                 </Grid>
                 <Grid container item xs={1.5} md={0} />
             </Grid>

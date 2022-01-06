@@ -24,8 +24,20 @@ const CoursePage = () => {
     const [loading, setLoading] = useState(true);
     const size = useSelector(getScreenSize);
     const refresh = useSelector(getRefresh);
-    const teacherId = user?.teacherNumber ? user.id : null;
+
+    const isStudent = user ? user.isStudent : false;
+    const studentId = isStudent ? user.id : null;
+    const teacherId = !isStudent ? user?.id : null;
     const isOwner = course?.TeacherId ? (course.TeacherId === teacherId) : false;
+    let isEnrolledStudent = false;
+
+    if (isStudent && course && course.Students) {
+        course.Students.forEach((student) => {
+            if (student.id === studentId) {
+                isEnrolledStudent = true;
+            }
+        })
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -41,15 +53,15 @@ const CoursePage = () => {
     const RenderTabScreens = () => {
         switch (activeKey) {
             case "1":
-                return <CourseDetailTab info={course} teacherInfo={teacherInfo} isOwner={isOwner} />
+                return <CourseDetailTab info={course} teacherInfo={teacherInfo} isOwner={isOwner} isEnrolledStudent={((!isStudent && isOwner) || isEnrolledStudent)} />;
             case "2":
-                return <StudentsTab students={course?.Students} />
+                return <StudentsTab students={course?.Students} />;
             case "3":
-                return <HomeworksTab homeworks={course?.homeworks} courseId={courseId} isOwner={isOwner} />
+                return <HomeworksTab homeworks={course?.homeworks} courseId={courseId} isOwner={isOwner} />;
             case "4":
-                return <ExamsTab exams={course?.exams} courseId={courseId} isOwner={isOwner} />
+                return <ExamsTab exams={course?.exams} courseId={courseId} isOwner={isOwner} />;
             default:
-                return <CourseDetailTab info={course} teacherInfo={teacherInfo} isOwner={isOwner} />
+                return <CourseDetailTab info={course} teacherInfo={teacherInfo} isOwner={isOwner} />;
         }
     }
 
@@ -62,9 +74,13 @@ const CoursePage = () => {
                         <Grid item container xs={12} sm={12} md={3} lg={1.5}>
                             <Tabs activeKey={activeKey} onTabClick={setActiveKey} tabPosition={size > 850 ? 'left' : 'top'} style={{ width: '100%' }} centered>
                                 <TabPane tab="Info" key="1" />
-                                <TabPane tab="Students" key="2" />
-                                <TabPane tab="Homeworks" key="3" />
-                                <TabPane tab="Exams" key="4" />
+                                {((!isStudent && isOwner) || isEnrolledStudent) && (
+                                    <>
+                                        <TabPane tab="Students" key="2" />
+                                        <TabPane tab="Homeworks" key="3" />
+                                        <TabPane tab="Exams" key="4" />
+                                    </>
+                                )}
                             </Tabs>
                         </Grid>
                         <Grid item xs={12} sm={12} md={9} lg={5}>

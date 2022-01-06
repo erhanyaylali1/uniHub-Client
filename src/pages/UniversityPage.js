@@ -25,7 +25,7 @@ const UniversityPage = () => {
     const [courses, setCourses] = useState([]);
 
     const teacherId = isLogged ? (user.isStudent ? null : user.id) : null;
-    let isRector;
+    let isRector = false;
 
     universities?.teachers.forEach((teacher) => {
         if (teacher.id === teacherId) {

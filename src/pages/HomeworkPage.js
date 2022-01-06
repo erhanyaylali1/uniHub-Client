@@ -23,9 +23,9 @@ const HomeworkPage = () => {
     const size = useSelector(getScreenSize);
     const refresh = useSelector(getRefresh);
 
-    const isStudent = isLogged ? (user.isStudent ? true : false) : false;
-    const studentId = isStudent ? 2 : null;
-    const teacherId = isStudent ? null : 2;
+    const isStudent = isLogged ? (user?.isStudent ? true : false) : false;
+    const studentId = isStudent ? user?.id : null;
+    const teacherId = isStudent ? null : user?.id;
     const isOwner = !isStudent && homework?.Course.TeacherId ? (homework.Course.TeacherId === teacherId) : false;
 
     useEffect(() => {

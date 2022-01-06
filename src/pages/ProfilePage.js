@@ -25,91 +25,90 @@ const ProfilePage = () => {
     var type = 'Student';
     const userId = user.id;
 
-
-    if(user.gpa != null){
+    if (user.gpa != null) {
         type = 'Student';
     }
-    else{
+    else {
         type = 'Teacher';
     }
 
     useEffect(() => {
         setLoading(true);
-        if(type=== 'Student'){
-                axios.get(`/students/${userId}`)
-            .then((res) => {
-                setUserInfo(res.data)
-            })
-            .finally(() => setLoading(false))
+        if (type === 'Student') {
+            axios.get(`/students/${userId}`)
+                .then((res) => {
+                    setUserInfo(res.data)
+                })
+                .finally(() => setLoading(false))
         }
-        else{
+        else {
             axios.get(`/teachers/${userId}`)
-            .then((res) => {
-                setUserInfo(res.data)
-            })
-            .finally(() => setLoading(false))
+                .then((res) => {
+                    setUserInfo(res.data)
+                })
+                .finally(() => setLoading(false))
         }
-        
+
     }, [userId, refresh]);
 
     console.log(userInfo);
     const RenderTabScreensStudent = () => {
-        switch(activeKey) {
-            case "1": 
-                return <Info user={userInfo} type={type}/>
+        switch (activeKey) {
+            case "1":
+                return <Info user={userInfo} type={type} />
             case "2":
-                return <UserCourses user={userInfo} type={type}/>
+                return <UserCourses user={userInfo} type={type} />
             case "3":
-                return 
+                return
             case "4":
                 return
             default:
-                return  
+                return
         }
     }
 
     const RenderTabScreensTeacher = () => {
-        switch(activeKey) {
-            case "1": 
-                return <Info user={userInfo} type={type}/>
+        switch (activeKey) {
+            case "1":
+                return <Info user={userInfo} type={type} />
             case "2":
-                return <UserCourses user={userInfo} type={type}/>
+                return <UserCourses user={userInfo} type={type} />
             default:
-                return  
+                return
         }
     }
-    
+
 
     return (
         <Grid container justifyContent='center'>
-            {loading ? "Loading...":(
+            {loading ? "Loading..." : (
                 <Grid item container spacing={2}>
-                    <Grid item container xs={0} sm={0} md={0} lg={2} /> 
+                    <Grid item container xs={0} sm={0} md={0} lg={2} />
                     <Grid item container xs={12} sm={12} md={3} lg={1.5}>
-                        {type === 'Student' ? ( 
-                        <Tabs activeKey={activeKey} onTabClick={setActiveKey} tabPosition={size > 850 ? 'left':'top'} style={{ width: '100%' }} centered>
-                            <TabPane tab="Info" key="1" />
-                            <TabPane tab="Courses" key="2" />
-                            <TabPane tab="Grades" key="3" />
-                            <TabPane tab="Weekly Schedule" key="4" />
-                        </Tabs>
-                        ):(
-                        <Tabs activeKey={activeKey} onTabClick={setActiveKey} tabPosition={size > 850 ? 'left':'top'} style={{ width: '100%' }} centered>
-                            <TabPane tab="Info" key="1" />
-                            <TabPane tab="Courses" key="2" />
-                        </Tabs>
+                        {type === 'Student' ? (
+                            <Tabs activeKey={activeKey} onTabClick={setActiveKey} tabPosition={size > 850 ? 'left' : 'top'} style={{ width: '100%' }} centered>
+                                <TabPane tab="Info" key="1" />
+                                <TabPane tab="Courses" key="2" />
+                                <TabPane tab="Grades" key="3" />
+                                <TabPane tab="Weekly Schedule" key="4" />
+                            </Tabs>
+                        ) : (
+                            <Tabs activeKey={activeKey} onTabClick={setActiveKey} tabPosition={size > 850 ? 'left' : 'top'} style={{ width: '100%' }} centered>
+                                <TabPane tab="Info" key="1" />
+                                <TabPane tab="Courses" key="2" />
+                            </Tabs>
                         )}
                     </Grid>
                     <Grid item xs={12} sm={12} md={9} lg={5}>
-                        {type === 'Student' ? ( 
+                        {type === 'Student' ? (
                             RenderTabScreensStudent()
                         ) : (
-                            RenderTabScreensTeacher() 
+                            RenderTabScreensTeacher()
                         )}
                     </Grid>
                     <Grid item container xs={0} sm={0} md={0} lg={2} />
                 </Grid>
-                
+
             )}
         </Grid>
     )

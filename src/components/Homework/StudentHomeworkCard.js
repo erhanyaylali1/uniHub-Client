@@ -76,12 +76,28 @@ const StudentHomeworkCard = ({ homeworkId, studentId, studentNumber, info }) => 
         })
     }
 
+    let grade = "Not Graded Yet";
+    info?.Course.Students.forEach((student) => {
+        if (student.id === studentId) {
+            student.Homework.forEach((homework) => {
+                if (homework.id === Number(homeworkId)) {
+                    if (homework.StudentHasHomework?.note) {
+                        grade = homework.StudentHasHomework.note
+                    }
+                }
+            })
+        }
+    })
+
     return (
         <Grid item container>
             <Grid container item xs={1.5} md={0} />
             <Grid container item xs={9} md={12} style={{ paddingBottom: 0 }}>
                 <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
                     <Statistic title="Deadline" value={info?.deadLine} />
+                </Grid>
+                <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
+                    <Statistic title="Homework Grade" value={`${grade}`} />
                 </Grid>
                 <Grid item container style={{ marginTop: 20 }} xs={12} md={6}>
                     <Statistic title="Homework Weight" value={`${info?.weight}%`} />
