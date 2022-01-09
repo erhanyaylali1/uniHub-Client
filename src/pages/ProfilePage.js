@@ -82,7 +82,7 @@ const ProfilePage = () => {
 
 
     return (
-        <Grid container justifyContent='center'>
+        <Grid container justifyContent='center' style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
             {loading ? "Loading..." : (
                 <Grid item container spacing={2}>
                     <Grid item container xs={0} sm={0} md={0} lg={2} />
