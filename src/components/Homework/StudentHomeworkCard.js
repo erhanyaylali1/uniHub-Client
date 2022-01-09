@@ -89,6 +89,10 @@ const StudentHomeworkCard = ({ homeworkId, studentId, studentNumber, info }) => 
         }
     })
 
+    const x = moment(info?.deadLine, "DD.MM.YYYY").unix();
+    const y = moment().unix();
+    const isPastDeadline = x < y;
+
     return (
         <Grid item container>
             <Grid container item xs={1.5} md={0} />
@@ -144,16 +148,24 @@ const StudentHomeworkCard = ({ homeworkId, studentId, studentNumber, info }) => 
                             <Grid item container xs={12} md={12} style={{ marginBottom: 20, marginTop: 20, fontSize: 14, fontWeight: 600 }}>
                                 <p>You haven't uploaded homework.</p>
                             </Grid>
-                            <Form.Item>
-                                <Upload {...props}>
-                                    <Button variant="contained" startIcon={<UploadOutlined />}>Upload New File</Button>
-                                </Upload>
-                            </Form.Item>
-                            <Form.Item>
-                                <Button variant="contained" color="success" onClick={() => handleSubmit()}>
-                                    Submit
-                                </Button>
-                            </Form.Item>
+                            {!isPastDeadline ? (
+                                <>
+                                    <Form.Item>
+                                        <Upload {...props}>
+                                            <Button variant="contained" startIcon={<UploadOutlined />}>Upload New File</Button>
+                                        </Upload>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button variant="contained" color="success" onClick={() => handleSubmit()}>
+                                            Submit
+                                        </Button>
+                                    </Form.Item>
+                                </>
+                            ) : (
+                                <p>
+                                    Deadline is past.
+                                </p>
+                            )}
                         </Form>
                     </Grid>
                 )}

@@ -54,7 +54,7 @@ const TeacherEdit = ({ exam }) => {
                 <Input defaultValue={exam.examName} />
             </Form.Item>
             <Form.Item label="Exam Date" name="adate">
-                <DatePicker.RangePicker format="DD/MM/YYYY HH:mm" showTime={{ format: 'HH:mm' }}
+                <DatePicker.RangePicker minuteStep={15} format="DD/MM/YYYY HH:mm" showTime={{ format: 'HH:mm' }}
                     defaultValue={[moment(exam.startDate, "DD/MM/YYYY HH:mm"), moment(exam.deadLine, "DD/MM/YYYY HH:mm")]}
                 />
             </Form.Item>

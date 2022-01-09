@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import { Statistic, Form, Input, Select, TimePicker, message } from 'antd';
+import { Statistic, Form, Input, Select, TimePicker, message, Modal, Button as Btn } from 'antd';
 import days from '../../utils/days';
 import { Button, IconButton } from '@mui/material';
 import moment from 'moment';
@@ -15,6 +15,8 @@ const CourseDetailTab = ({ info, teacherInfo, isOwner, isEnrolledStudent }) => {
 
     const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const handleSubmit = (values) => {
 
@@ -29,6 +31,19 @@ const CourseDetailTab = ({ info, teacherInfo, isOwner, isEnrolledStudent }) => {
                 message.success(res.data);
                 setIsEdit(false);
             }).catch((err) => message.error(err.message))
+    }
+
+    const handleCloseCourse = () => {
+        setIsLoading(true);
+        axios.get(`finish-course/${info?.id}`)
+            .then((res) => message.success(res.data))
+            .then(() => setIsLoading(false))
+            .then(() => setIsVisible(false))
+            .then(() => dispatch(setRefresh()))
+            .catch(err => {
+                console.log(err);
+                setIsLoading(false);
+            })
     }
 
     return (
@@ -78,7 +93,7 @@ const CourseDetailTab = ({ info, teacherInfo, isOwner, isEnrolledStudent }) => {
                             label="Start Time"
                             name="startTime"
                         >
-                            <TimePicker defaultValue={moment(info?.startTime, "HH:mm")} format="HH:mm" />
+                            <TimePicker minuteStep={30} defaultValue={moment(info?.startTime, "HH:mm")} format="HH:mm" />
                         </Form.Item>
                         <Form.Item
                             label="Duration"
@@ -103,13 +118,18 @@ const CourseDetailTab = ({ info, teacherInfo, isOwner, isEnrolledStudent }) => {
             <Grid item container>
                 <Grid container item xs={1.5} md={0} />
                 <Grid container item xs={9} md={12} style={{ paddingBottom: 0 }}>
-                    {isOwner && (
+                    {!info?.isFinished && isOwner && (
                         <Grid item container xs={12} justifyContent="flex-end" style={{ marginTop: 10, marginBottom: 10 }} >
                             <IconButton onClick={() => setIsEdit(true)} color="primary">
                                 <EditIcon />
                             </IconButton>
                         </Grid>
                     )}
+                    {info?.isFinished ? (
+                        <Grid item container xs={12} style={{ marginBottom: 40, fontSize: 25, color: '#50080E' }}>
+                            This Course is Finished !
+                        </Grid>
+                    ) : null}
                     <Grid item container xs={12} md={6}>
                         <Statistic title="Course Name" value={info?.courseName} />
                     </Grid>
@@ -141,8 +161,42 @@ const CourseDetailTab = ({ info, teacherInfo, isOwner, isEnrolledStudent }) => {
                             </Grid>
                         </>
                     )}
+                    <Grid item container xs={12}>
+                        {!info?.isFinished && isOwner && (
+                            <Button variant="contained" style={{ marginTop: 20 }} onClick={() => setIsVisible(true)}>
+                                Finish the Course
+                            </Button>
+                        )}
+                    </Grid>
                 </Grid>
                 <Grid container item xs={1.5} md={0} />
+                <Modal
+                    visible={isVisible}
+                    onCancel={() => setIsVisible(false)}
+                    onOk={handleCloseCourse}
+                    footer={[
+                        <Btn key="back" onClick={() => setIsVisible(false)}>
+                            Cancel
+                        </Btn>,
+                        <Btn
+                            type="primary"
+                            loading={isLoading}
+                            onClick={handleCloseCourse}
+                        >
+                            Finish
+                        </Btn>,
+                    ]}
+                >
+                    <div>
+                        You are finishing this course.
+                    </div>
+                    <div>
+                        This operation is irreversible.
+                    </div>
+                    <div>
+                        Are you sure ?
+                    </div>
+                </Modal>
             </Grid>
         )
     )

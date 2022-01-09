@@ -39,6 +39,9 @@ const CoursePage = () => {
         })
     }
 
+
+    console.log(course)
+
     useEffect(() => {
         setLoading(true);
         axios.get(`/courses/${courseId}`)

@@ -47,7 +47,7 @@ const CourseTab = ({ courses }) => {
     return (
         <Grid>
             <Grid item container spacing={2}>
-                {courses?.map((course, index) => (
+                {courses?.map((course, index) => !course.isFinished && (
                     <Grid key={index} item container xs={12} md={6} xl={4} justifyContent={size > 850 ? "flex-start" : "center"} style={{ marginTop: 5 }}>
                         <Card>
                             <Card.Content>

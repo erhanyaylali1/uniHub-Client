@@ -1,35 +1,80 @@
-import React, { useState } from 'react'
-import { Card } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import axios from '../../utils/apiCall';
 import { getScreenSize } from '../../features/generalSlice';
+import { getUser } from '../../features/userSlice';
+import { Button, Grid, Modal } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import EditProfileModal from '../Profile/EditProfileModal';
+import { Statistic } from 'antd';
 
-
-
-const Info = ({user, type}) => {
-
+const Info = ({ user, type, changedUser, isOwner }) => {
+    const [open, setOpen] = useState(false);
+    const [changed, setChanged] = useState(false);
+    const [userInfo, setUserInfo] = useState(user);
     const size = useSelector(getScreenSize);
-    console.log(user);
+
+    var userType = useSelector(getUser);
+    userType = userType?.isStudent;
+
+    if (changed) {
+        if (type === 'Student') {
+            axios.get(`/students/${user?.id}`)
+                .then((res) => {
+                    setUserInfo(res.data);
+                    setChanged(false);
+                    changedUser();
+                })
+        }
+        else {
+            axios.get(`/teachers/${user?.id}`)
+                .then((res) => {
+                    setUserInfo(res.data);
+                    setChanged(false);
+                    changedUser();
+                })
+        }
+    }
+
+    useEffect(() => {
+        setUserInfo(user);
+    }, [user])
+
+
     return (
         <Grid>
-            <Grid item container spacing={2}>
-                <Grid item container xs={12} md={6} xl={4} justifyContent={ size > 850 ? "flex-start":"center" } style={{ marginTop: 20 }}>
-                    <Card>
-                        <Card.Content>
-                            <Card.Header>
-                                {user.fullName}
-                            </Card.Header>
-                            <Card.Meta>
-                                Number: { type === 'Student' ? user.studentNumber: user.teacherNumber}
-                            </Card.Meta>
-                            <Card.Description>
-                                Email: {user.email}
-                            </Card.Description>
-                        </Card.Content>
-                    </Card>
+            <Grid container item xs={1.5} md={0} />
+            <Grid container item xs={9} md={12} style={{ paddingBottom: 0 }}>
+                <Grid item container xs={12} md={12} style={{ marginTop: '20px' }}>
+                    <Statistic title="Fullname" value={userInfo?.fullName} />
                 </Grid>
+                <Grid item container xs={12} md={12} style={{ marginTop: '20px' }}>
+                    <Statistic title="Email" value={userInfo?.email} />
+                </Grid>
+                <Grid item container xs={12} md={12} style={{ marginTop: '20px' }}>
+                    <Statistic title="Number" formatter={(value) => value} value={type === 'Student' ? userInfo?.studentNumber : userInfo?.teacherNumber} />
+                </Grid>
+                {type === 'Student' && 
+                    <Grid item container xs={12} md={12} style={{ marginTop: '20px' }}>
+                        <Statistic title="Gpa" value={userInfo?.gpa} />
+                    </Grid>
+                }
             </Grid>
+            {isOwner ? (
+                <Grid item container justifyContent="center">
+                    <Grid item container style={{ marginTop: 20, width: size < 850 ? '50%' : '100%' }} justifyContent="flex-start">
+                        <Button variant="contained" size={"medium"} startIcon={<EditIcon />} fullWidth={size < 850} onClick={() => setOpen(true)}>
+                            Edit Profile
+                        </Button>
+                    </Grid>
+                    <Modal
+                        open={open}
+                        onClose={() => setOpen(false)}
+                    >
+                        <EditProfileModal user={user} changed={() => setChanged(true)} closeModal={() => setOpen(false)} />
+                    </Modal>
+                </Grid>
+            ) : ('')}
         </Grid>
     )
 }

@@ -5,7 +5,7 @@ import { getScreenSize } from '../../features/generalSlice';
 import { useHistory } from "react-router-dom";
 
 const Result = ({ result, type }) => {
-    
+
     const screenSize = useSelector(getScreenSize)
     const history = useHistory();
 
@@ -23,13 +23,13 @@ const Result = ({ result, type }) => {
 
     return (
         <Col style={{ display: 'flex', justifyContent: 'center' }} >
-            <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: screenSize < 500 ? '90%':(type =! "submitted" ? '100%':'30%')}}>
+            <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: screenSize < 500 ? '70%' : (type !== "submitted" ? '30%' : '30%') }}>
                 <Row style={{ fontSize: 20, marginBottom: 20, textAlign: 'center' }}>Exam Succesfully Submitted!</Row>
                 <Button onClick={() => history.goBack()}>
                     Go Back!
                 </Button>
-                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center':'space-between'}}>
-                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px':'0'}}>
+                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center' : 'space-between' }}>
+                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px' : '0' }}>
                         Answered Question
                     </Col>
                     <Col>
@@ -37,26 +37,26 @@ const Result = ({ result, type }) => {
                     </Col>
                 </Row>
                 <Divider />
-                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center':'space-between'}}>
-                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px':'0'}}>
-                        Correct Answer Percentage
+                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center' : 'space-between' }}>
+                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px' : '0' }}>
+                        Correct Answer Pct
                     </Col>
                     <Col>
-                        <Progress type="circle" percent={result.correctAnswerNumber}  strokeColor="green" format={percent => `${percent}%`} />
+                        <Progress type="circle" percent={result.correctAnswerNumber} strokeColor="green" format={percent => `${percent}%`} />
                     </Col>
                 </Row>
                 <Divider />
-                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center':'space-between'}}>
-                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px':'0'}}>
-                        Wrong Answer Percentage
+                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center' : 'space-between' }}>
+                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px' : '0' }}>
+                        Wrong Answer Pct
                     </Col>
                     <Col>
-                        <Progress type="circle" percent={result.wrongAnswerNumber}  strokeColor="red" format={percent => `${percent}%`}/>
+                        <Progress type="circle" percent={result.wrongAnswerNumber} strokeColor="red" format={percent => `${percent}%`} />
                     </Col>
                 </Row>
                 <Divider />
-                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center':'space-between'}}>
-                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px':'0'}}>
+                <Row style={{ ...eachStat, justifyContent: screenSize < 500 ? 'center' : 'space-between' }}>
+                    <Col style={{ ...label, marginBottom: screenSize < 500 ? '15px' : '0' }}>
                         Your Exam Result (Point)
                     </Col>
                     <Col>

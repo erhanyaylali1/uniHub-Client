@@ -20,7 +20,7 @@ const Navbar = () => {
 
     return (
         <Menu mode="horizontal" className="nav-bar-for-shadow">
-            <Menu.Item key="home" onClick={() => History.push('/home')}>
+            <Menu.Item key="home" onClick={() => History.push('/')}>
                 Home
             </Menu.Item>
             <Menu.Item key="universities" onClick={() => History.push('/universities')}>

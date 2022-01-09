@@ -51,7 +51,7 @@
     position: fixed !important;
 }
 
-.add-homework-modal-container, .add-exam-modal-container {
+.add-homework-modal-container, .add-exam-modal-container, .edit-profile-modal-container {
     background-color: white;
     position: absolute;
     top: 50%;
@@ -107,4 +107,40 @@
 
 .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
     font-size: 15px !important;
+}
+
+
+[data-theme='compact'] .site-collapse-custom-collapse .site-collapse-custom-panel,
+.site-collapse-custom-collapse .site-collapse-custom-panel {
+  margin-bottom: 24px;
+  overflow: hidden;
+  background: #f7f7f7;
+  border: 0px;
+  border-radius: 2px;
+}
+
+.fc-today-button.fc-button.fc-button-primary{
+  display: none;
+}
+.fc-button-group{
+  display: none;
+}
+
+table tr td:first-child{
+  color:brown;
+  
+}
+
+table tr td{
+  text-align: center;
+}
+
+
+
+.gradesHeaders{
+  font-weight: bold;
+  margin-left: 10px;
+  text-align: center;
+  margin-top: 15px;
+  color: rgb(53, 49, 49);
 }

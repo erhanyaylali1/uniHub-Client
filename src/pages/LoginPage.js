@@ -38,7 +38,6 @@ const LoginPage = () => {
                             setErrorMessage("Kullanıcı rektor tarafından onaylanmadı.");
                             return;
                         } else {
-
                             axios.post(`/students/login`, { email: email, password: password })
                                 .then((res) => {
                                     if (res.data.length === 0) {
@@ -50,7 +49,7 @@ const LoginPage = () => {
                                         dispatch(login(res.data));
                                         localStorage.setItem("token", res.data.token);
                                         message.success('Başarıyla giriş yapıldı');
-                                        history.push('/home');
+                                        history.push('/');
                                     }
                                 }).catch((err) => {
                                     message.error("Giriş Yapılamadı.");
@@ -61,7 +60,7 @@ const LoginPage = () => {
                         dispatch(login(res.data));
                         localStorage.setItem("token", res.data.token);
                         message.success('Başarıyla giriş yapıldı');
-                        history.push('/home');
+                        history.push('/');
                     }
                 }).catch((err) => {
                     message.error(err.data.error);
