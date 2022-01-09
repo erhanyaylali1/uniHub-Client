@@ -87,7 +87,7 @@ const RegisterPage = () => {
         <div className="container-loginReg">
 
             <div className="row-register">
-                <div style={{ visibility: alertShow ? 'visible' : 'hidden' }}>
+                <div style={{ display: alertShow ? 'initial' : 'none' }}>
                     <Alert
                         message="Başarılı"
                         description="Başarıyla kayıt oldunuz. Giriş sayfasına yönlendiriyorsunuz.."

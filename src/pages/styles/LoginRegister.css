@@ -1,7 +1,9 @@
 .container-loginReg{
-    margin: 0;
-    width: 100%;
+    margin-top: 30px;
+    width: 80%;
     height: 100%;
+    margin-left: auto;
+    margin-right: auto;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -11,7 +13,7 @@
 .row-register{
     position: relative;
     padding: 10px;
-    min-width: 500px;
+    min-width: 350px;
     min-height: 500px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -30,7 +32,7 @@
     width: 20%;
     position: relative;
     padding: 10px;
-    min-width: 400px;
+    min-width: 350px;
     min-height: 500px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
