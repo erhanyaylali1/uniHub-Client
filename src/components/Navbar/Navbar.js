@@ -26,13 +26,15 @@ const Navbar = () => {
             <Menu.Item key="universities" onClick={() => History.push('/universities')}>
                 Universities
             </Menu.Item>
-            <Menu.Item key="Profile" onClick={() => History.push('/profile')}>
-                Profile
-            </Menu.Item>
             {isLogged ? (
-                <Menu.Item key="Logout" onClick={handleLogout} style={{ marginLeft: 'auto' }}>
-                    Logout
-                </Menu.Item>
+                <>
+                    <Menu.Item key="Profile" onClick={() => History.push('/profile')}>
+                        Profile
+                    </Menu.Item>
+                    <Menu.Item key="Logout" onClick={handleLogout} style={{ marginLeft: 'auto' }}>
+                        Logout
+                    </Menu.Item>
+                </>
             ) : (
                 <>
                     <Menu.Item key="login" onClick={() => History.push('/login')} style={{ marginLeft: 'auto' }} >

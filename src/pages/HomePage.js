@@ -15,7 +15,7 @@ const HomePage = () => {
                 <span style={{ fontSize: (size * 2.9 / 100) + 20 }}>
                     UniHub
                 </span>
-                <p style={{ fontSize: (size / 100) + 15 }}>
+                <p style={{ fontSize: (size / 100) + 10 }}>
                     Redesign of University
                 </p>
             </div>
